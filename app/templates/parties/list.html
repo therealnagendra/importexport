@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Parties{% endblock %}
+{% block content %}
+<h2>Parties</h2>
+<a href="/parties/new" class="btn btn-primary">New Party</a>
+<form class="filters" method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search parties">
+    <select name="party_type"><option value="">Party Type</option><option value="Importer" {% if party_type=='Importer' %}selected{% endif %}>Importer</option><option value="Exporter" {% if party_type=='Exporter' %}selected{% endif %}>Exporter</option></select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<table>
+    <thead><tr><th>Company</th><th>Type</th><th>Contact</th><th>Email</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr><td>{{ row.company_name }}</td><td>{{ row.party_type }}</td><td>{{ row.contact_person }}</td><td>{{ row.email }}</td><td><a href="/parties/{{ row.id }}/edit">Edit</a> <form method="post" action="/parties/{{ row.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" class="link-btn" onclick="return confirm('Delete this party?')">Delete</button></form></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

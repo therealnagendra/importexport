@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Expenses{% endblock %}
+{% block content %}
+<h2>Expenses</h2>
+<a href="/expenses/new" class="btn btn-primary">New Expense</a>
+<table>
+    <thead><tr><th>Shipment</th><th>Category</th><th>Description</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr><td>{{ row.shipment_reference or row.shipment_id }}</td><td>{{ row.category }}</td><td>{{ row.description }}</td><td>{{ row.amount }} {{ row.currency }}</td><td>{{ row.payment_status }}</td><td><a href="/expenses/{{ row.id }}/edit">Edit</a> <form method="post" action="/expenses/{{ row.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" class="link-btn" onclick="return confirm('Delete this expense?')">Delete</button></form></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

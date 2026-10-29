@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h2>Reports</h2>
+<div class="report-links"><a href="/reports/export?type=shipments">Export Shipments CSV</a> | <a href="/reports/export?type=expenses">Export Expenses CSV</a></div>
+<table>
+    <thead><tr><th>Reference</th><th>Type</th><th>Status</th><th>Country</th></tr></thead>
+    <tbody>
+    {% for item in shipments %}
+    <tr><td>{{ item.reference_no }}</td><td>{{ item.shipment_type }}</td><td>{{ item.shipment_status }}</td><td>{{ item.origin_country }} to {{ item.destination_country }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{% if party %}Edit Party{% else %}New Party{% endif %}{% endblock %}
+{% block content %}
+<h2>{% if party %}Edit Party{% else %}New Party{% endif %}</h2>
+<form method="post" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Company Name</label><input type="text" name="company_name" value="{{ party.company_name if party else '' }}" required>
+    <label>Party Type</label><select name="party_type"><option value="Importer" {% if party and party.party_type=='Importer' %}selected{% endif %}>Importer</option><option value="Exporter" {% if party and party.party_type=='Exporter' %}selected{% endif %}>Exporter</option><option value="Buyer" {% if party and party.party_type=='Buyer' %}selected{% endif %}>Buyer</option><option value="Seller" {% if party and party.party_type=='Seller' %}selected{% endif %}>Seller</option></select>
+    <label>Contact Person</label><input type="text" name="contact_person" value="{{ party.contact_person if party else '' }}">
+    <label>Email</label><input type="email" name="email" value="{{ party.email if party else '' }}">
+    <label>Telephone</label><input type="text" name="telephone" value="{{ party.telephone if party else '' }}">
+    <label>Address</label><textarea name="address">{{ party.address if party else '' }}</textarea>
+    <label>Country</label><input type="text" name="country" value="{{ party.country if party else '' }}">
+    <label>Tax ID</label><input type="text" name="tax_id" value="{{ party.tax_id if party else '' }}">
+    <label>Notes</label><textarea name="notes">{{ party.notes if party else '' }}</textarea>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Save</button><a href="/parties" class="btn">Cancel</a></div>
+</form>
+{% endblock %}

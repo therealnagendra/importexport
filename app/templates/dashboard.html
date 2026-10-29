@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="stats-grid">
+    <div class="card stat stat-blue">
+        <span>Total Shipments</span>
+        <strong>{{ totals.total_shipments or 0 }}</strong>
+        <small>Across all movements</small>
+    </div>
+    <div class="card stat stat-teal">
+        <span>Imports</span>
+        <strong>{{ totals.import_count or 0 }}</strong>
+        <small>Inbound consignments</small>
+    </div>
+    <div class="card stat stat-green">
+        <span>Exports</span>
+        <strong>{{ totals.export_count or 0 }}</strong>
+        <small>Outbound consignments</small>
+    </div>
+    <div class="card stat stat-gold">
+        <span>In Transit</span>
+        <strong>{{ totals.active_count or 0 }}</strong>
+        <small>Ready for action</small>
+    </div>
+    <div class="card stat stat-orange">
+        <span>Pending</span>
+        <strong>{{ totals.pending_count or 0 }}</strong>
+        <small>Awaiting clearance</small>
+    </div>
+    <div class="card stat stat-purple">
+        <span>Completed</span>
+        <strong>{{ totals.completed_count or 0 }}</strong>
+        <small>Delivered records</small>
+    </div>
+    <div class="card stat stat-dark">
+        <span>Total Expense</span>
+        <strong>${{ '%.2f'|format(expense_total or 0) }}</strong>
+        <small>Current operational spend</small>
+    </div>
+</div>
+
+<div class="content-grid">
+    <section class="panel panel-large">
+        <div class="panel-header">
+            <h3>Recent Shipments</h3>
+            <a href="/shipments" class="text-link">View all</a>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr><th>Reference</th><th>Type</th><th>Product</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+            {% for item in recent_shipments %}
+            <tr>
+                <td>{{ item.reference_no }}</td>
+                <td>{{ item.shipment_type }}</td>
+                <td>{{ item.product_description }}</td>
+                <td><span class="status-pill">{{ item.shipment_status }}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel panel-side">
+        <div class="panel-header">
+            <h3>Shipment Status</h3>
+        </div>
+        <div class="mini-chart">
+            {% for item in status_distribution %}
+            <div class="mini-row">
+                <div class="mini-label"><span>{{ item.label }}</span></div>
+                <div class="mini-bar-wrap">
+                    <div class="mini-bar" style="width: {{ (item.value * 100 / (status_distribution[0].value or 1))|round|int }}%;"></div>
+                </div>
+                <strong>{{ item.value }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

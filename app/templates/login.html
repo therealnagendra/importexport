@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block auth_content %}
+<div class="login-page">
+    <div class="login-card">
+        <div class="brand-wrap brand-wrap-login">
+            <div class="brand-mark">IE</div>
+            <div>
+                <div class="brand-name">TradeFlow</div>
+                <small>Import &amp; Export Hub</small>
+            </div>
+        </div>
+        <p class="login-tagline">Operations Dashboard</p>
+        <h1>Welcome back</h1>
+        <p>Secure local management for shipment and trade operations.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form method="post" action="/login" class="login-form">
+            <div class="form-field">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Enter username" required>
+            </div>
+            <div class="form-field">
+                <label>Password</label>
+                <div class="password-field">
+                    <input type="password" name="password" id="password" placeholder="Enter password" required>
+                    <button type="button" class="password-toggle" aria-label="Show password" aria-pressed="false">
+                        <svg class="eye-icon eye-on" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M1.5 12S5.25 5.25 12 5.25 22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12Zm10.5 4.5A4.5 4.5 0 1 1 16.5 12a4.5 4.5 0 0 1-4.5 4.5Z"/>
+                        </svg>
+                        <svg class="eye-icon eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2.25 2.25 21.75 21.75M10.5 10.5a1.5 1.5 0 0 0 3 0 1.5 1.5 0 0 0-3 0Zm-2.62 2.62A6 6 0 0 0 12 17.25a6.08 6.08 0 0 0 5.39-3.23l2.36 2.36C17.16 19.75 14.84 21.75 12 21.75 5.25 21.75 1.5 12 1.5 12a15.65 15.65 0 0 1 6.38-7.13ZM12 5.25A15.59 15.59 0 0 1 17.7 7.3L15.8 9.2A6.1 6.1 0 0 0 12 8.25a6.18 6.18 0 0 0-5.71 3.75L4.5 13.5A9.77 9.77 0 0 1 12 5.25Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

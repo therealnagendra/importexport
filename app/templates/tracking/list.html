@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Tracking{% endblock %}
+{% block content %}
+<h2>Tracking for {{ shipment.reference_no }}</h2>
+<a href="/tracking/{{ shipment.id }}/new" class="btn btn-primary">Add Milestone</a>
+<ul class="timeline">
+    {% for row in rows %}
+    <li>
+        <strong>{{ row.milestone }}</strong>
+        <div>{{ row.milestone_date }} - {{ row.location or 'N/A' }}</div>
+        <div>{{ row.status }}</div>
+        <p>{{ row.remarks }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

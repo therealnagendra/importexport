@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Import Export System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+    {% if session.get('user_id') %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand-wrap">
+                <div class="brand-mark">IE</div>
+                <div>
+                    <div class="brand-name">Import Export</div>
+                    <small>Operations Suite</small>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/shipments" class="nav-item">Shipments</a>
+                <a href="/parties" class="nav-item">Parties</a>
+                <a href="/agents" class="nav-item">Agents</a>
+                <a href="/documents" class="nav-item">Documents</a>
+                <a href="/expenses" class="nav-item">Expenses</a>
+                <a href="/reports" class="nav-item">Reports</a>
+                <a href="/settings" class="nav-item">Settings</a>
+            </nav>
+            <div class="user-box">
+                <div class="user-avatar">{{ session.get('username')[0].upper() }}</div>
+                <div class="user-meta">
+                    <strong>{{ session.get('username') }}</strong>
+                    <span>{{ session.get('role') | title }}</span>
+                </div>
+                <form method="post" action="/logout">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-secondary btn-small">Logout</button>
+                </form>
+            </div>
+        </aside>
+        <main class="main-panel">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Operations overview</p>
+                    <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button type="button" class="btn btn-primary">Quick action</button>
+                </div>
+            </header>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+        {% block auth_content %}{% endblock %}
+    {% endif %}
+</body>
+</html>

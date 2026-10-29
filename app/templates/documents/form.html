@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Upload Document{% endblock %}
+{% block content %}
+<h2>Upload Document</h2>
+<form method="post" enctype="multipart/form-data" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Reference Number</label><input type="text" name="reference_no">
+    <label>Shipment</label>
+    <select name="shipment_id">
+        <option value="">--</option>
+        {% for shipment in shipments %}<option value="{{ shipment.id }}">{{ shipment.reference_no }}</option>{% endfor %}
+    </select>
+    <label>Document Type</label><select name="document_type"><option>Commercial Invoice</option><option>Packing List</option><option>Bill of Lading</option><option>Air Waybill</option><option>Certificate of Origin</option><option>Insurance Certificate</option><option>Shipping Bill</option><option>Bill of Entry</option></select>
+    <label>Issue Date</label><input type="date" name="issue_date">
+    <label>Expiry Date</label><input type="date" name="expiry_date">
+    <label>Description</label><textarea name="description"></textarea>
+    <label>Choose File</label><input type="file" name="file" required>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Upload</button><a href="/documents" class="btn">Cancel</a></div>
+</form>
+{% endblock %}

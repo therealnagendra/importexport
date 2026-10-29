@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{% if agent %}Edit Agent{% else %}New Agent{% endif %}{% endblock %}
+{% block content %}
+<h2>{% if agent %}Edit Agent{% else %}New Agent{% endif %}</h2>
+<form method="post" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Company Name</label><input type="text" name="company_name" value="{{ agent.company_name if agent else '' }}" required>
+    <label>Agent Type</label><select name="agent_type"><option value="CHA" {% if agent and agent.agent_type=='CHA' %}selected{% endif %}>CHA</option><option value="Freight" {% if agent and agent.agent_type=='Freight' %}selected{% endif %}>Freight</option><option value="Customs" {% if agent and agent.agent_type=='Customs' %}selected{% endif %}>Customs</option></select>
+    <label>Contact Person</label><input type="text" name="contact_person" value="{{ agent.contact_person if agent else '' }}">
+    <label>Email</label><input type="email" name="email" value="{{ agent.email if agent else '' }}">
+    <label>Telephone</label><input type="text" name="telephone" value="{{ agent.telephone if agent else '' }}">
+    <label>Office Address</label><textarea name="office_address">{{ agent.office_address if agent else '' }}</textarea>
+    <label>Country</label><input type="text" name="country" value="{{ agent.country if agent else '' }}">
+    <label>License Reference</label><input type="text" name="license_reference" value="{{ agent.license_reference if agent else '' }}">
+    <label>Notes</label><textarea name="notes">{{ agent.notes if agent else '' }}</textarea>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Save</button><a href="/agents" class="btn">Cancel</a></div>
+</form>
+{% endblock %}

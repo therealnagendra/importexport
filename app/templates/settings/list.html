@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<h2>Application Settings</h2>
+<table>
+    <thead><tr><th>Key</th><th>Value</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr><td>{{ row.key }}</td><td>{{ row.value }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

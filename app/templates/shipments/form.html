@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}{% if shipment %}Edit Shipment{% else %}New Shipment{% endif %}{% endblock %}
+{% block content %}
+<h2>{% if shipment %}Edit Shipment{% else %}New Shipment{% endif %}</h2>
+<form method="post" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Reference</label><input type="text" name="reference_no" value="{{ shipment.reference_no if shipment else '' }}" required>
+    <label>Shipment Type</label>
+    <select name="shipment_type">
+        <option value="Import" {% if shipment and shipment.shipment_type == 'Import' %}selected{% endif %}>Import</option>
+        <option value="Export" {% if shipment and shipment.shipment_type == 'Export' %}selected{% endif %}>Export</option>
+    </select>
+    <label>Product</label><input type="text" name="product_description" value="{{ shipment.product_description if shipment else '' }}" required>
+    <label>Importer</label>
+    <select name="importer_id">
+        <option value="">--</option>
+        {% for party in parties %}<option value="{{ party.id }}" {% if shipment and shipment.importer_id == party.id %}selected{% endif %}>{{ party.company_name }}</option>{% endfor %}
+    </select>
+    <label>Exporter</label>
+    <select name="exporter_id">
+        <option value="">--</option>
+        {% for party in parties %}<option value="{{ party.id }}" {% if shipment and shipment.exporter_id == party.id %}selected{% endif %}>{{ party.company_name }}</option>{% endfor %}
+    </select>
+    <label>Origin Country</label><input type="text" name="origin_country" value="{{ shipment.origin_country if shipment else '' }}">
+    <label>Destination Country</label><input type="text" name="destination_country" value="{{ shipment.destination_country if shipment else '' }}">
+    <label>Origin Port</label><input type="text" name="origin_port" value="{{ shipment.origin_port if shipment else '' }}">
+    <label>Destination Port</label><input type="text" name="destination_port" value="{{ shipment.destination_port if shipment else '' }}">
+    <label>HS Code</label><input type="text" name="hs_code" value="{{ shipment.hs_code if shipment else '' }}">
+    <label>Quantity</label><input type="text" name="quantity" value="{{ shipment.quantity if shipment else '' }}">
+    <label>Unit</label><input type="text" name="unit" value="{{ shipment.unit if shipment else '' }}">
+    <label>Invoice Value</label><input type="text" name="invoice_value" value="{{ shipment.invoice_value if shipment else '' }}">
+    <label>Currency</label><input type="text" name="currency" value="{{ shipment.currency if shipment else 'USD' }}">
+    <label>Status</label>
+    <select name="shipment_status">
+        <option value="Pending" {% if shipment and shipment.shipment_status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="In Transit" {% if shipment and shipment.shipment_status == 'In Transit' %}selected{% endif %}>In Transit</option>
+        <option value="Customs Cleared" {% if shipment and shipment.shipment_status == 'Customs Cleared' %}selected{% endif %}>Customs Cleared</option>
+        <option value="Delivered" {% if shipment and shipment.shipment_status == 'Delivered' %}selected{% endif %}>Delivered</option>
+    </select>
+    <label>Notes</label><textarea name="notes">{{ shipment.notes if shipment else '' }}</textarea>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Save</button><a href="/shipments" class="btn">Cancel</a></div>
+</form>
+{% endblock %}

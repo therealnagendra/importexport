@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Shipments{% endblock %}
+{% block content %}
+<h2>Shipments</h2>
+<a href="/shipments/new" class="btn btn-primary">New Shipment</a>
+<form class="filters" method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search...">
+    <select name="shipment_type"><option value="">Type</option><option value="Import" {% if shipment_type=='Import' %}selected{% endif %}>Import</option><option value="Export" {% if shipment_type=='Export' %}selected{% endif %}>Export</option></select>
+    <select name="status"><option value="">Status</option><option value="Pending" {% if status=='Pending' %}selected{% endif %}>Pending</option><option value="In Transit" {% if status=='In Transit' %}selected{% endif %}>In Transit</option><option value="Delivered" {% if status=='Delivered' %}selected{% endif %}>Delivered</option></select>
+    <input type="text" name="country" value="{{ country }}" placeholder="Country">
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<table>
+    <thead><tr><th>Reference</th><th>Type</th><th>Product</th><th>Status</th><th>Country</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr>
+        <td>{{ row.reference_no }}</td>
+        <td>{{ row.shipment_type }}</td>
+        <td>{{ row.product_description }}</td>
+        <td>{{ row.shipment_status }}</td>
+        <td>{{ row.origin_country or row.destination_country }}</td>
+        <td>
+            <a href="/shipments/{{ row.id }}/edit">Edit</a>
+            <form method="post" action="/shipments/{{ row.id }}/delete" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="link-btn" onclick="return confirm('Delete this shipment?')">Delete</button>
+            </form>
+            <a href="/tracking/{{ row.id }}">Track</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Agents{% endblock %}
+{% block content %}
+<h2>Agents</h2>
+<a href="/agents/new" class="btn btn-primary">New Agent</a>
+<form class="filters" method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search agents">
+    <select name="agent_type"><option value="">Agent Type</option><option value="CHA" {% if agent_type=='CHA' %}selected{% endif %}>CHA</option><option value="Freight" {% if agent_type=='Freight' %}selected{% endif %}>Freight</option></select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<table>
+    <thead><tr><th>Company</th><th>Type</th><th>Contact</th><th>Country</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr><td>{{ row.company_name }}</td><td>{{ row.agent_type }}</td><td>{{ row.contact_person }}</td><td>{{ row.country }}</td><td><a href="/agents/{{ row.id }}/edit">Edit</a> <form method="post" action="/agents/{{ row.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" class="link-btn" onclick="return confirm('Delete this agent?')">Delete</button></form></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
